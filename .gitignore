@@ -55,3 +55,5 @@ Servers/Tomcat v8.0 Server at localhost-config/server.xml
 Servers/Tomcat v8.0 Server at localhost-config/context.xml
 Servers/Tomcat v8.0 Server at localhost-config/catalina.properties
 DatabaseWebApp/WebContent/META-INF/context.xml
+
+*.class
