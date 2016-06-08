@@ -1,6 +1,7 @@
 package com.brtero.web.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -59,6 +60,31 @@ public class StudentDbUtil {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+	}
+	
+	public void addStudent(Student student) throws Exception{
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try{
+			// create sql insert
+			myConn = dataSource.getConnection();
+			String sql = "insert into student "
+					+ "(first_name, last_name, email) "
+					+ "values(?, ?, ?)";
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set the param values of the student
+			myStmt.setString(1, student.getFirstName());
+			myStmt.setString(2, student.getLastName());
+			myStmt.setString(3, student.getEmail());
+			
+			// execute sql
+			myStmt.execute();
+		}finally{
+			// clean up JDBC objects
+			close(myConn, myStmt, null);
 		}
 	}
 }
