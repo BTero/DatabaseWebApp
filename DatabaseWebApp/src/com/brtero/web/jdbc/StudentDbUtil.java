@@ -87,6 +87,65 @@ public class StudentDbUtil {
 			close(myConn, myStmt, null);
 		}
 	}
+	
+	public Student getStudent(String theStudentId) throws Exception{
+		Student student = null;
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		int studentId;
+		
+		try{
+			studentId = Integer.parseInt(theStudentId);
+			
+			myConn = dataSource.getConnection();
+			
+			String sql = "select * from student where id=?";
+			
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setInt(1, studentId);
+			
+			myRs = myStmt.executeQuery();
+			
+			if(myRs.next()){
+				String firstName = myRs.getString("first_name");
+				String lastName = myRs.getString("last_name");
+				String email = myRs.getString("email");
+				
+				student = new Student(studentId, firstName, lastName, email);
+			}else{
+				throw new Exception("Could not find student id: " + studentId);
+			}
+			return student;
+		}finally{
+			close(myConn, myStmt, myRs);
+		}
+	}
+	
+	public void updateStudent(Student theStudent) throws Exception{
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try{
+			myConn = dataSource.getConnection();
+			
+			String sql = "update student "
+					+ "set first_name=?, last_name=?, email=? "
+					+ "where id=?";
+			
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setString(1, theStudent.getFirstName());
+			myStmt.setString(2, theStudent.getLastName());
+			myStmt.setString(3, theStudent.getEmail());
+			myStmt.setInt(4, theStudent.getId());
+			
+			myStmt.execute();
+			
+		}finally{
+			close(myConn, myStmt, null);
+		}
+	}
 }
 
 
