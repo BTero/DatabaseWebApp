@@ -27,12 +27,21 @@
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Email</th>
+					<th>Action</th>
 				</tr>
 				<c:forEach var="student" items="${STUDENT_LIST }">
+				
+				<!-- set up a update link for each student -->
+					<c:url var="updateLink" value="StudentControllerServlet">
+						<c:param name="command" value="LOAD"/>
+						<c:param name="studentId" value="${student.id }"/>
+					</c:url>
+					
 					<tr>
 						<td>${student.firstName }</td>
 						<td>${student.lastName }</td>
 						<td>${student.email }</td>
+						<td><a href="${updateLink }">Update</a></td>
 					</tr>
 				
 				</c:forEach>
